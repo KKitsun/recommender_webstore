@@ -1,0 +1,238 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% load l10n %}
+
+{% block content %}
+
+<div class="checkout_wrapper">
+
+    <div class="items_container">
+        <div class="items_container_box">
+          {% if request.user.is_authenticated %}
+            {% for item in items %}
+            <div class="items_container_box_item">
+                <div class="items_container_box_item_imagewrapper">
+                    <img class="items_container_box_item_image"  {% if item.game.image %} src="{{item.game.image.url}}" {% else %} src="" {% endif %} alt="">
+                </div>
+
+                <div class="items_container_box_item_title">
+                        <div class="items_container_box_item_titlelink">
+                            {{item.game.title}}
+                        </div>
+                </div>
+
+                <div class="items_container_box_item_data">
+                    {{item.get_total}}₴
+                </div>
+
+                <div class="items_container_box_item_data">
+                    x{{item.quantity}}
+                </div>
+
+            </div>
+            {% endfor %}
+          {% else %}
+            {% for item in items %}
+            <div class="items_container_box_item">
+                <div class="items_container_box_item_imagewrapper">
+                    <img class="items_container_box_item_image"  src="{{item.game.imageURL}}" alt="">
+                </div>
+
+                <div class="items_container_box_item_title">
+                        <div class="items_container_box_item_titlelink">
+                            {{item.game.title}}
+                        </div>
+                </div>
+
+                <div class="items_container_box_item_data">
+                    {{item.get_total}}₴
+                </div>
+
+                <div class="items_container_box_item_data">
+                    x{{item.quantity}}
+                </div>
+
+            </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+    </div>
+
+    <div class="order_info_container">
+        <div class="order_info_container_info">
+          {% if request.user.is_authenticated %}
+            <div>Кількість товарів: {{cartCounter}}</div>
+            <div>Загальна сума: {{cartTotal|floatformat:2}}₴</div>
+          {% else %}
+            <div>Кількість товарів: {{order.get_cart_items}}</div>
+            <div>Загальна сума: {{order.get_cart_total|unlocalize}}₴</div>
+          {% endif %}
+        </div>
+        <hr class="order_info_container_hr">
+        <div class="order_info_container_purchaseButton" id="order_info_container_purchaseButton">
+          <!-- <a href="{% url 'pay-test' %}">
+            <div class="cart_container_total_button">
+                Оплатити з Google Pay
+            </div>
+          </a> -->
+        </div>
+    </div>
+    
+</div>
+
+<script>
+  const baseRequest = {
+    apiVersion: 2,
+    apiVersionMinor: 0,
+  };
+
+  const allowedCardNetworks = ["MASTERCARD", "VISA"];
+
+  const allowedCardAuthMethods = ["PAN_ONLY"];
+
+  const tokenizationSpecification = {
+    type: 'PAYMENT_GATEWAY',
+    parameters: {
+      'gateway': 'cardconnect',
+      'gatewayMerchantId': 'exampleGatewayMerchantId'
+    }
+  };
+
+  const baseCardPaymentMethod = {
+    type: 'CARD',
+    parameters: {
+      allowedAuthMethods: allowedCardAuthMethods,
+      allowedCardNetworks: allowedCardNetworks
+    }
+  };
+
+  const cardPaymentMethod = Object.assign(
+    {},
+    baseCardPaymentMethod,
+    {
+      tokenizationSpecification: tokenizationSpecification
+    }
+  );
+
+  let paymentsClient = null;
+
+
+  function getGoogleIsReadyToPayRequest() {
+    return Object.assign(
+        {},
+        baseRequest,
+        {
+          allowedPaymentMethods: [baseCardPaymentMethod]
+        }
+    );
+  }
+
+
+  function getGooglePaymentDataRequest() {
+    const paymentDataRequest = Object.assign({}, baseRequest);
+    paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+    paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+    paymentDataRequest.emailRequired = true;
+    paymentDataRequest.merchantInfo = {
+      merchantName: 'Silvermoon'
+    };
+    return paymentDataRequest;
+  }
+
+  function getGooglePaymentsClient() {
+    if ( paymentsClient === null ) {
+      paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+    }
+    return paymentsClient;
+  }
+
+
+  function onGooglePayLoaded() {
+    const paymentsClient = getGooglePaymentsClient();
+    paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+        .then(function(response) {
+          if (response.result) {
+            addGooglePayButton();
+          }
+        })
+        .catch(function(err) {
+          console.error(err);
+        });
+  }
+
+  function addGooglePayButton() {
+    const paymentsClient = getGooglePaymentsClient();
+    const button =
+        paymentsClient.createButton({
+          buttonColor: 'white',
+          onClick: onGooglePaymentButtonClicked,
+          allowedPaymentMethods: [baseCardPaymentMethod]
+        });
+    document.getElementById('order_info_container_purchaseButton').appendChild(button);
+  }
+
+  function getGoogleTransactionInfo() {
+    return {
+      countryCode: 'UA',
+      currencyCode: 'UAH',
+      totalPriceStatus: 'FINAL',
+      {% if request.user.is_authenticated %}
+      totalPrice: '{{cartTotal|unlocalize}}'
+      {% else %}
+      totalPrice: '{{order.get_cart_total|unlocalize}}'
+      {% endif %}
+    };
+  }
+
+  function prefetchGooglePaymentData() {
+    const paymentDataRequest = getGooglePaymentDataRequest();
+    paymentDataRequest.transactionInfo = {
+      totalPriceStatus: 'FINAL',
+      currencyCode: 'UAH'
+    };
+    const paymentsClient = getGooglePaymentsClient();
+    paymentsClient.prefetchPaymentData(paymentDataRequest);
+  }
+
+  function onGooglePaymentButtonClicked() {
+    const PaymentDataRequest = getGooglePaymentDataRequest();
+    PaymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+
+    const PaymentsClient = getGooglePaymentsClient();
+    PaymentsClient.loadPaymentData(PaymentDataRequest)
+      .then(function(paymentData) {
+        processPayment(paymentData);
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+  }
+
+  function processPayment(paymentData) {
+    fetch('/process-payment-result/', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body:JSON.stringify({'paymentData':paymentData})
+        })
+        .then((response) =>{
+            return response.json()
+        })
+        .then((data) =>{
+            alert('Успішна транзакція. Перевірте пошту!');
+
+            {% if not request.user.is_authenticated %}
+            cart = {}
+            document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+            {% endif %}
+
+            window.location.href = "{% url 'shop_page' %}"
+        })
+  }</script>
+
+<script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
+
+{% endblock %}

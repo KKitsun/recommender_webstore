@@ -1,0 +1,291 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+{% if recommendations %}
+
+<div class="recommendation_info">
+    <div class="history_page_info_header">Рекомендовано на основі бажаного</div>
+</div>
+
+<div class="recommendation_container">
+    <div class="recommendation_container_carousel-view">
+    
+        <button id="recommendation_container_prev-btn" class="recommendation_container_prev-btn" onclick="slider('prev')">&#10094;</button>
+            
+        <div id="recommendation_container_item-list" class="recommendation_container_item-list">
+
+            {% for game in recommendations %}
+
+            <a href="{% url 'game_page' id=game.id %}">
+                <div class="recommendation_container_item_container">
+                    <div class="recommendation_container_item_container_image_wrapper">
+                        <img class="recommendation_container_item_container_image" {% if game.image %} src="{{game.image.url}}" {% else %} src="" {% endif %} alt="">
+                    </div>
+                    <div class="recommendation_container_item_container_info">
+                        <div class="recommendation_container_item_container_info_row">{{game.title}}</div>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+            
+        <button id="recommendation_container_next-btn" class="recommendation_container_next-btn" onclick="slider('next')">&#10095;</button>
+
+    </div>
+</div>
+{% else %}
+<div class="recommendation_info">
+    <div class="history_page_info_header" style="text-align: center;">Додавайте товари до бажаного, щоб отримати рекомендації</div>
+</div>
+{% endif %}
+
+{% if recommendations_collaborative %}
+
+<div class="recommendation_info" style="margin-top: 30px;">
+    <div class="history_page_info_header">Вам також сподобається</div>
+</div>
+
+<div class="recommendation_container">
+    <div class="recommendation_container_carousel-view">
+    
+        {% if recommendations_collaborative_count > 4 %}
+
+        <button id="recommendation_container_prev-btn2" class="recommendation_container_prev-btn" onclick="slider2('prev')">&#10094;</button>
+        {% endif %}
+        
+        <div id="recommendation_container_item-list2" class="recommendation_container_item-list" {% if recommendations_collaborative_count <= 4 %} style="justify-content: center;" {% endif %}>
+
+            {% for game in recommendations_collaborative %}
+
+            <a href="{% url 'game_page' id=game.id %}">
+                <div class="recommendation_container_item_container">
+                    <div class="recommendation_container_item_container_image_wrapper">
+                        <img class="recommendation_container_item_container_image" {% if game.image %} src="{{game.image.url}}" {% else %} src="" {% endif %} alt="">
+                    </div>
+                    <div class="recommendation_container_item_container_info">
+                        <div class="recommendation_container_item_container_info_row">{{game.title}}</div>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+        {% if recommendations_collaborative_count > 4 %}   
+        <button id="recommendation_container_next-btn2" class="recommendation_container_next-btn" onclick="slider2('next')">&#10095;</button>
+        {% endif %}  
+    </div>
+</div>
+{% endif %}
+{% else %}
+<div class="recommendation_info">
+    <div class="history_page_info_header" style="text-align: center; color: #ffffff80;font-size: 22px;">Увійдіть до облікового запису та додавайте бажані товари, щоб побачити персональні рекомендації</div>
+</div>
+{% endif %}
+
+<div class="shop_div">
+    <div class="shop_container">
+        <div class="shop_container_sort">
+            <div class="sort_button" id="sort-off" onclick="addQueryStringParameter(window.location.href, 'sort_by', '')">Усі товари</div>
+            <div class="sort_button" id="price" onclick="addQueryStringParameter(window.location.href, 'sort_by', 'price')">За зростанням ціни</div>
+            <div class="sort_button" id="-price" onclick="addQueryStringParameter(window.location.href, 'sort_by', '-price')">За спаданням ціни</div>
+            <div class="sort_button" id="-score" onclick="addQueryStringParameter(window.location.href, 'sort_by', '-score')">За оцінкою</div>
+            <div class="sort_button" id="releaseDate" onclick="addQueryStringParameter(window.location.href, 'sort_by', 'releaseDate')">За датою виходу</div>
+            <div class="sort_button" id="-releaseDate" onclick="addQueryStringParameter(window.location.href, 'sort_by', '-releaseDate')">За новизною</div>
+        </div>
+        <div class="shop_container_main">
+
+            <div class="shop_container_filters">
+                <a href="{% url 'shop_page' %}">
+                    <div class="remove_filters">Скинути</div>
+                </a>
+                <form method="GET" action="{% url 'shop_page' %}" class="shop_container_filters_form">
+                    <input type="text" placeholder="Пошук за назвою" name="game_title" class="shop_container_filters_form_inputText" autocomplete="off">
+                    <input type="submit" value="" class="shop_container_filters_submitTitleField">
+                </form>
+                <div>
+                    <div class="shop_container_filters_big">Жанри</div>
+                    {% for genre in Genres %}
+                    <div class="shop_container_filters_buttons" id="genre_{{genre.id}}" onclick="addQueryStringParameter(window.location.href, 'genre', '{{genre.id}}')">{{genre.name}}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <div class="shop_container_filters_big">Піджанри</div>
+                    {% for subgenre in Subgenres %}
+                    <div class="shop_container_filters_buttons" id="subgenre_{{subgenre.id}}" onclick="addQueryStringParameter(window.location.href, 'subgenre', '{{subgenre.id}}')">{{subgenre.name}}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <div class="shop_container_filters_big">Візуальний стиль і перспектива</div>
+                    {% for visual in Visuals %}
+                    <div class="shop_container_filters_buttons" id="visual_{{visual.id}}" onclick="addQueryStringParameter(window.location.href, 'visual', '{{visual.id}}')">{{visual.name}}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <div class="shop_container_filters_big">Тематика й атмосфера</div>
+                    {% for theme in Themes %}
+                    <div class="shop_container_filters_buttons" id="theme_{{theme.id}}" onclick="addQueryStringParameter(window.location.href, 'theme', '{{theme.id}}')">{{theme.name}}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <div class="shop_container_filters_big">Особливості</div>
+                    {% for feature in Features %}
+                    <div class="shop_container_filters_buttons" id="feature_{{feature.id}}" onclick="addQueryStringParameter(window.location.href, 'feature', '{{feature.id}}')">{{feature.name}}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <div class="shop_container_filters_big">Гравці</div>
+                    {% for player in Players %}
+                    <div class="shop_container_filters_buttons" id="playerType_{{player.id}}" onclick="addQueryStringParameter(window.location.href, 'playerType', '{{player.id}}')">{{player.name}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="shop_container_products">
+                {% for game in Games %}
+                <div class="shop_container_products_item">
+                    <div class="shop_container_products_item_imagewrapper">
+                        <a href="{% url 'game_page' id=game.id %}" class="img-shadow centered_a"><img class="shop_container_products_item_image" {% if game.image %} src="{{game.image.url}}" {% else %} src="" {% endif %} alt=""></a>
+                    </div>
+                    <div class="shop_container_products_item_infowrapper">
+
+                        <div class="shop_container_products_item_title">
+                            <a href="{% url 'game_page' id=game.id %}">
+                                <div class="shop_container_products_item_titlelink">
+                                    {{game.title}}
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="shop_container_products_item_gamedata">
+                            <div class="shop_container_products_item_gamedata_tags">
+                                {% if game.genre %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.genre.name}}
+                                </div>
+                                {% endif %}
+                                {% if game.subgenre %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.subgenre.name}}
+                                </div>
+                                {% endif %}
+                                {% if game.visual %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.visual.name}}
+                                </div>
+                                {% endif %}
+                                {% if game.theme %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.theme.name}}
+                                </div>
+                                {% endif %}
+                                {% if game.feature %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.feature.name}}
+                                </div>
+                                {% endif %}
+                                {% if game.playersType %}
+                                <div class="shop_container_products_item_gamedata_tags_tag">
+                                    {{game.playersType.name}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="shop_container_products_item_gamedata_releaseDate">
+                                {{game.releaseDate|date:"j E Y"}}
+                            </div>
+                            <div {% if game.score > 75 %} class="shop_container_products_item_gamedata_score green_score" {% elif game.score > 50 %} class="shop_container_products_item_gamedata_score yellow_score" {% else %} class="shop_container_products_item_gamedata_score red_score" {% endif %}>
+                                Metascore: {{game.score}}
+                            </div>
+                        </div>
+                        
+                        <div class="shop_container_products_item_priceAndButton">
+                            <div class="shop_container_products_item_price">
+                                {{game.price|floatformat:2}}₴
+                            </div>
+                            {% if request.user.is_authenticated %}
+                                {% if game.id in wishlist %}
+                                    <div class="shop_container_products_item_button_wishlist shop_container_products_item_button_wishlist_active" onclick="addItemToWishlist({{game.id}});">
+                                        Вилучити з бажаного
+                                    </div>
+                                {% else %}
+                                    <div class="shop_container_products_item_button_wishlist" onclick="addItemToWishlist({{game.id}});">
+                                        У бажане
+                                    </div>
+                                {% endif %}
+
+                                {% if game.id in orderItemsIds %}
+                                    <div class="shop_container_products_item_button shop_container_products_item_button_active" id="shop_container_products_item_button{{game.id}}" onclick="addItemToCart(this, {{game.id}});">
+                                        Вилучити з кошика
+                                    </div>
+                                {% else %}
+                                    <div class="shop_container_products_item_button" id="shop_container_products_item_button{{game.id}}" onclick="addItemToCart(this, {{game.id}});">
+                                        Додати в кошик
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                            <div class="shop_container_products_item_button" id="shop_container_products_item_button{{game.id}}" onclick="addItemToCart(this, {{game.id}});">
+                                Додати в кошик
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function shopPagePrerender() {
+        let classNameActive = 'shop_container_products_item_button_active';
+        let buttonLabelAdd = 'Додати в кошик';
+        let buttonLabelRemove = 'Вилучити з кошика';
+        for (const [key, value] of Object.entries(cart)) {
+            if (document.getElementById(`shop_container_products_item_button${key}`)){
+                const productButton = document.getElementById(`shop_container_products_item_button${key}`)
+                productButton.classList.add(classNameActive);
+                productButton.innerHTML = buttonLabelRemove;
+            }
+        }
+    }
+    if (user === 'AnonymousUser') {
+        shopPagePrerender();
+    }
+
+    function filterOptsAddClass(params, tag) {
+        let filter_opt = params[tag];
+        if (filter_opt != undefined && filter_opt != '') {
+            const filterButton = document.getElementById(tag + `_${filter_opt}`);
+            filterButton.classList.add('shop_container_filters_buttons_active');
+        }
+    }
+
+    function RenderSortAndFilter() {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        
+        let sort_opt = params.sort_by;
+        if (sort_opt == undefined || sort_opt == '') {
+            sort_opt = 'sort-off'
+        }
+        const sortButton = document.getElementById(`${sort_opt}`);
+        sortButton.classList.add('sort_button_active');
+
+        
+        filterOptsAddClass(params, 'genre');
+        filterOptsAddClass(params, 'subgenre');
+        filterOptsAddClass(params, 'visual');
+        filterOptsAddClass(params, 'theme');
+        filterOptsAddClass(params, 'feature');
+        filterOptsAddClass(params, 'playerType');
+    }
+    RenderSortAndFilter();
+</script>
+{% endblock %}

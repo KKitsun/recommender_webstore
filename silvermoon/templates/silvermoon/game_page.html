@@ -1,0 +1,148 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="gamepage_title">
+    <div class="gamepage_title_header">{{game.title}}</div>
+</div>
+
+<div class="gamepage_wrapper">
+
+    <div class="game_description_container">
+        <p class="game_description_p">{{game.description|linebreaks}}</p>
+    </div>
+
+    <div class="game_info_container">
+        <div class="game_info_container_imagewrapper">
+            <img class="game_info_container_image"  src="{{game.image.url}}" alt="">
+        </div>
+        
+        <div class="game_info_container_infowrapper">
+            <div class="game_info_container_releaseDate">
+                Дата виходу: {{game.releaseDate|date:"j E Y"}}
+            </div>
+            <hr class="game_info_container_hr">
+            <div class="game_info_container_releaseDate">
+                Розробник: {{game.developer}}
+            </div>
+            <hr class="game_info_container_hr">
+            <div {% if game.score > 75 %} class="game_info_container_releaseDate green_score" {% elif game.score > 50 %} class="game_info_container_releaseDate yellow_score" {% else %} class="game_info_container_releaseDate red_score" {% endif %}>
+                Metascore: {{game.score}}
+            </div>
+            <hr class="game_info_container_hr">
+            <div class="game_info_container_releaseDate">
+                {% if game.genre %}
+                <div class="game_info_container_tags_tag">
+                    Жанр: {{game.genre.name}}
+                </div>
+                {% endif %}
+                {% if game.subgenre %}
+                <div class="game_info_container_tags_tag">
+                    Піджанр: {{game.subgenre.name}}
+                </div>
+                {% endif %}
+                {% if game.visual %}
+                <div class="game_info_container_tags_tag">
+                    Візуальний стиль: {{game.visual.name}}
+                </div>
+                {% endif %}
+                {% if game.theme %}
+                <div class="game_info_container_tags_tag">
+                    Тематика: {{game.theme.name}}
+                </div>
+                {% endif %}
+                {% if game.feature %}
+                <div class="game_info_container_tags_tag">
+                    Особливість: {{game.feature.name}}
+                </div>
+                {% endif %}
+                {% if game.playersType %}
+                <div class="game_info_container_tags_tag">
+                    Тип гравців: {{game.playersType.name}}
+                </div>
+                {% endif %}
+            </div>
+            <hr class="game_info_container_hr">
+            <div class="game_info_container_releaseDate">
+                Ціна: {{game.price}}₴
+            </div>
+        
+            {% if request.user.is_authenticated %}
+            <hr class="game_info_container_hr">
+            <div class="game_info_container_buttons">
+            {% if game.id in wishlist %}
+                <div class="shop_container_products_item_button_wishlist shop_container_products_item_button_wishlist_active" onclick="addItemToWishlist({{game.id}});">
+                    Вилучити з бажаного
+                </div>
+            {% else %}
+                <div class="shop_container_products_item_button_wishlist" onclick="addItemToWishlist({{game.id}});">
+                    У бажане
+                </div>
+            {% endif %}
+
+            {% if game.id in orderItemsIds %}
+                <div class="shop_container_products_item_button shop_container_products_item_button_active" id="shop_container_products_item_button{{game.id}}" onclick="addItemToCart(this, {{game.id}});">
+                    Вилучити з кошика
+                </div>
+            {% else %}
+                <div class="shop_container_products_item_button" id="shop_container_products_item_button{{game.id}}" onclick="addItemToCart(this, {{game.id}});">
+                    Додати в кошик
+                </div>
+            {% endif %}
+
+                <div class="game_info_container_buttons_rating">
+                    <div class="game_info_container_buttons_rating_star {% if rating.rating == 5 %} game_info_container_buttons_rating_star_checked {% endif %}" onclick="rateGame({{game.id}}, 5)">&#9733;</div>
+                    <div class="game_info_container_buttons_rating_star {% if rating.rating == 4 %} game_info_container_buttons_rating_star_checked {% endif %}" onclick="rateGame({{game.id}}, 4)">&#9733;</div>
+                    <div class="game_info_container_buttons_rating_star {% if rating.rating == 3 %} game_info_container_buttons_rating_star_checked {% endif %}" onclick="rateGame({{game.id}}, 3)">&#9733;</div>
+                    <div class="game_info_container_buttons_rating_star {% if rating.rating == 2 %} game_info_container_buttons_rating_star_checked {% endif %}" onclick="rateGame({{game.id}}, 2)">&#9733;</div>
+                    <div class="game_info_container_buttons_rating_star {% if rating.rating == 1 %} game_info_container_buttons_rating_star_checked {% endif %}" onclick="rateGame({{game.id}}, 1)">&#9733;</div>
+                </div>
+            </div>
+
+
+        {% endif %}
+
+        </div>
+    </div>
+    
+</div>
+
+{% if request.user.is_authenticated %}
+{% if recommendations %}
+
+<div class="recommendation_info" style="margin-top: 0px;">
+    <div class="history_page_info_header">Схожі на цю гру</div>
+</div>
+
+<div class="recommendation_container">
+    <div class="recommendation_container_carousel-view">
+    
+        <button id="recommendation_container_prev-btn" class="recommendation_container_prev-btn" onclick="slider('prev')">&#10094;</button>
+            
+        <div id="recommendation_container_item-list" class="recommendation_container_item-list">
+
+            {% for game in recommendations %}
+
+            <a href="{% url 'game_page' id=game.id %}">
+                <div class="recommendation_container_item_container">
+                    <div class="recommendation_container_item_container_image_wrapper">
+                        <img class="recommendation_container_item_container_image" {% if game.image %} src="{{game.image.url}}" {% else %} src="" {% endif %} alt="">
+                    </div>
+                    <div class="recommendation_container_item_container_info">
+                        <div class="recommendation_container_item_container_info_row">{{game.title}}</div>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+            
+        <button id="recommendation_container_next-btn" class="recommendation_container_next-btn" onclick="slider('next')">&#10095;</button>
+
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

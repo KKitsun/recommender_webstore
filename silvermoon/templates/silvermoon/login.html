@@ -1,0 +1,50 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="authorization_title">
+    <div class="authorization_title_header">Увійти</div>
+</div>
+
+<div class="authorization_wrapper">
+    <div class="authorization_container">
+        <div class="authorization_container_form-wrapper">
+            <form class="authorization_container_form" method="POST">
+                {% csrf_token %}
+                <div class="authorization_container_form_field">
+                    {{ form.username.label_tag }}
+                    {{ form.username}}
+                </div>
+
+                <div class="authorization_container_form_field">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+
+                <div class="authorization_container_form_submit">
+                    <input class="authorization_container_form_submit_button" type="submit" value="Увійти">
+                </div>
+
+                {% if form.errors %}
+                <div class="authorization_container_form_submit">
+                    <ul class="errorlist">
+                        {% for field, notes in form.errors.items %}
+                            {% for note in notes %}
+                                <li>{{ note }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="authorization_container_form_submit">
+                    <p>Не маєте облікового запису? <a href="{% url 'register' %}">Зареєструйтесь!</a></p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

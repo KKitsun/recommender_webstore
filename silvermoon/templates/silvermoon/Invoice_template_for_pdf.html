@@ -1,0 +1,214 @@
+{% load static %}
+{% load l10n %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .company_info {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 25px;
+            font-weight: normal;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order_info {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 19px;
+            font-weight: normal;
+        }
+
+        .company_logo {
+            width: 110px;
+            height: 130px;
+        }
+
+        .checkout_wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .items_container, .order_info_container{
+            background-image: linear-gradient(0deg, rgb(44, 48, 55) 0%, rgb(114, 120, 126) 100%);
+            background-position: initial;
+            background-size: initial;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: initial;
+            padding: 16px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        
+            display: flex;
+            flex-direction: column;
+        }
+
+        .items_container {
+            min-width: 712px;
+        }
+
+        .items_container_box_item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 650px;
+            box-shadow: 0 0 8px rgba(0,0,0,.5);
+            background: linear-gradient(rgba(66, 69, 76, 0.6), rgba(37, 40, 46, 0.4));
+        
+            padding-left: 10px;
+            padding-right: 20px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            backdrop-filter: blur(15px);
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .items_container_box_item_imagewrapper {
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .items_container_box_item_image {
+            height: 81.6px;
+            width: 175.2px;
+        }
+
+        .items_container_box_item_title {
+            width: 175px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .items_container_box_item_titlelink {
+            overflow-wrap: break-word;
+            max-width: 178px;
+            font-size: 14px;
+            font-weight: 100;
+            letter-spacing: 1px;
+        }
+
+        .items_container_box_item_data {
+            font-size: 14px;
+            font-weight: 100;
+            letter-spacing: 1px;
+        }
+
+        .order_info_container {
+            min-width: 350px;
+        }
+
+        .order_info_container_info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: normal;
+        }
+
+        .order_info_container_hr {
+            border: solid 1px #606060!important;
+            box-sizing: content-box;
+            height: 0px;
+            margin: 1em 0;
+        }
+
+        .order_info_container_purchaseButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+        th {
+            /* font-weight: 600; */
+            padding: 10px 10px;
+            border: 2px solid rgb(0,0,0);
+            text-align: center;
+            background-color: rgb(88, 88, 88);
+            /* color: rgba(255, 255, 255);
+            font-size: large; */
+        }
+
+        td {
+            padding: 10px 10px;
+            border: 2px solid rgb(25,25,25);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="company_info">
+        <img class="company_logo" src="D:\projects\fourthCourse\SecondSemester\diploma_project\web_store\silvermoon\static\silvermoon\img\Silvermoon_logo_BIG.png" alt="">Silvermoon
+        <hr class="order_info_container_hr">
+    </div>
+    <div class="order_info">
+            <div>Order number: {{specific_order.id}}</div>
+            {% language 'en' %}
+            <div>Order date: {{specific_order.date|unlocalize}}</div>
+            {% endlanguage %}
+
+            <table>
+                {% for item in items %}
+
+                <tr>
+                    <td>{{item.game.title}}</td><td>x{{item.quantity}}</td><td>{{item.get_total}} UAH</td>
+                </tr>
+
+                {% endfor %}
+            
+            </table>
+            <br>
+            <div>Total quantity of goods: {{order.get_cart_items}}</div>
+            <div>Total: {{order.get_cart_total}} UAH</div>
+
+            <table>
+                <tr style="background-color: #d3d3d3;">
+                    <td>Your game keys:</td>
+                    <td>
+                        {% for game_key in game_keys %}
+                            <p style="font-size: 10px;">{{game_key}}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="cart_page_info">
+    <div class="cart_page_info_header">Мій кошик</div>
+</div>
+
+{% if request.user.is_authenticated %}
+
+<div class="cart_div">
+    <div class="cart_container" id="cart">
+        <div class="cart_container_products" id="cart">
+            {% for item in items %}
+            <div class="cart_container_products_cartitem">
+                <div class="cart_container_products_cartitem_imagewrapper">
+                    <div class="img-shadow centered_a"><img class="cart_container_products_cartitem_image"  {% if item.game.image %} src="{{item.game.image.url}}" {% else %} src="" {% endif %} alt=""></div>
+                </div>
+
+                <div class="cart_container_products_cartitem_title">
+                    <div>
+                        <div class="cart_container_products_cartitem_titlelink">
+                            {{item.game.title}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart_container_products_cartitem_price">
+                    {{item.game.price|floatformat:2}}₴
+                </div>
+
+                <div class="cart_container_products_cartitem_counter">
+                    <div class="cart_container_products_cartitem_counter__minus" onclick="cartChangeQuantityUserOrder({{item.game_id}}, 'minus')">-</div>
+                    <div class="cart_container_products_cartitem_counter__value">{{item.quantity}}</div>
+                    <div class="cart_container_products_cartitem_counter__plus" onclick="cartChangeQuantityUserOrder({{item.game_id}}, 'plus')">+</div>
+                </div>
+
+                <div class="cart_container_products_cartitem_price">
+                    {{item.get_total}}₴
+                </div>
+
+                <div class="cart_container_products_cartitem_button"  onclick="removeItemUserOrder({{item.game_id}})">
+                    Вилучити
+                </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+            <div class="cart_container_total">
+                <div class="cart_container_total_quantity">
+                    <div>Кількість товарів</div>
+                    <div>{{cartCounter}}</div>
+                </div>
+                <div class="cart_container_total_price">
+                    <div>Разом:</div>
+                    <div>{{cartTotal|floatformat:2}}₴</div>
+                </div>
+                <a href="{% url 'checkout' %}">
+                    <div class="cart_container_total_button">
+                        Оформити замовлення
+                    </div>
+                </a>
+            </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="cart_div">
+    <div class="cart_container" id="cart">
+
+    </div>
+</div>
+
+<script src="{% static 'silvermoon/js/renderCart.js' %}"></script>
+{% endif %}
+
+{% endblock %}

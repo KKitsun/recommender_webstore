@@ -1,0 +1,58 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if not orders %}
+<div class="history_page_info">
+    <div class="history_page_info_header" style="margin-left: auto;margin-right: auto; text-align: center;">У Вас немає замовлень</div>
+</div>
+{% else %}
+
+
+{% for order in orders %}
+<div class="history_page_info">
+    <div class="history_page_info_header">Замовлення номер {{order.id}}</div>
+</div>
+
+<div class="history_div">
+    <div class="cart_container" id="cart">
+        <div class="cart_container_products" id="cart">
+            {% for item in order.ordergame_set.all %}
+            <div class="cart_container_products_cartitem">
+                <div class="cart_container_products_cartitem_imagewrapper">
+                    <div class="img-shadow centered_a"><img class="cart_container_products_cartitem_image"  {% if item.game.image %} src="{{item.game.image.url}}" {% else %} src="" {% endif %} alt=""></div>
+                </div>
+
+                <div class="cart_container_products_cartitem_title">
+                    <div>
+                        <a href="{% url 'game_page' id=item.game.id %}" target="_blank">
+                            <div class="cart_container_products_cartitem_titlelink">
+                                {{item.game.title}}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cart_container_products_cartitem_price">
+                    x{{item.quantity}}
+                </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+            <div class="cart_container_total">
+                <div class="cart_container_total_quantity">
+                    <div>Дата замовлення</div>
+                </div>
+                <div class="cart_container_total_quantity">
+                    <div>{{order.date}}</div>
+                </div>
+            </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endif %}
+{% endblock %}

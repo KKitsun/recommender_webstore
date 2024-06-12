@@ -1,0 +1,383 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    display: block;
+}
+
+html, body{min-height:100%;}
+body{height:100vh;}
+
+html{
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+
+    background-color: rgb(18, 18, 18);
+    font-family: "Inter Tight", Sans-serif;
+    font-style: normal;
+    background-attachment: fixed;
+    background-size: cover;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 14px;
+    background: rgb(18, 18, 18);
+    z-index: 12;
+    overflow: visible;
+}
+
+::-webkit-scrollbar-corner {
+    background: #202020;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #4e5157;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    z-index: 12;
+    border: 4px solid rgba(0,0,0,0);
+    background-clip: padding-box;
+    transition: background-color .32s ease-in-out;
+    margin: 4px;
+    min-height: 32px;
+    min-width: 32px;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+    color: inherit;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: inherit;
+}
+
+.navbar, .footer_contant, footer, header {
+    background-color: #2a2a2a;
+}
+
+.navbar {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+   width: 100%;
+   margin-top: 100px;
+}
+
+.footer_contant {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 1.25em 4.5em 1.5em;
+    color: #e7e7e7;
+    font-size: 0.8em;
+}
+
+.footer_hr {
+    border-color: #484848!important;
+    border-style: solid none none;
+    box-sizing: content-box;
+    height: 0;
+    margin: 1em 0;
+}
+
+.footer_links {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.footer_vl {
+    border-left: 1.5px solid #484848!important;
+    height: 18px;
+}
+
+.footer_logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 8px;
+    gap: 5px;
+}
+
+.footer_logo img {
+    display: block;
+    max-width:50px;
+    max-height:50px;
+    width: auto;
+    height: auto;
+}
+
+.company_text {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.logo {
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 50px;
+    background: url("../img/whitebgSilvermoon.jpg") contain no-repeat; */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    width: 120px;
+    background: url(../img/Silvermoon_logo_BIG.png) no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: rgba(0,0,0,255);
+    position: relative;
+    left: 15px;
+    top: 35px;
+    border: solid 6px #2a2a2a;
+    color: rgba(255, 255, 255, 0.85);
+
+    transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.logo:hover {
+    color: rgb(255, 255, 255);
+    box-shadow: inset 0 0 5px 5px rgba(123, 123, 123, 0.5);
+}
+
+.logo a {
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+
+.logo_title {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    top: 17px;
+    left: 120px;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Style the links */
+.links a {
+    height: 100%;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .links a:hover {
+    text-decoration: underline;
+} */
+
+.header-link_div {
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgb(209, 214, 220);
+    font-size: 14px;
+    font-weight: normal;
+    border-left: solid 2px #53535378;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0);
+
+    transition: color 0.1s ease, background-color 0.3s ease;
+}
+
+.header-link_div:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.centered_a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header_cart_counter {
+    width: 17px;
+    height: 17px;
+    font-size: 11px;
+    font-weight: normal;
+    position: absolute;
+    right: 7px;
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.links-container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.dropdown {
+    overflow: hidden;
+    height: 100%;
+    border-left: solid 2px #53535378;
+}
+
+.dropdown_icon {
+    margin-left: 5px;
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.dropdown_icon::before {
+    content: "\2630";
+}
+
+.dropdown .dropbtn {
+    min-width: 180px;
+    height: 100%;
+
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: #4286f4;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+
+    transition: color 0.1s ease, background-color 0.3s ease;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #4286f4;
+    color: black;
+}
+
+.dropdown-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background-color: #2a2a2a;;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10;
+
+    transition: visibility 0.1s, opacity 0.3s linear;
+}
+
+.dropdown-content a {
+    float: none;
+    color: rgb(209, 214, 220);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-weight: 500;
+
+    transition: color 0.1s ease, background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+.logout-button {
+    color: #d21313 !important;
+}
+
+.logout-button:hover {
+    color: #f01818 !important;
+}
+
+.login-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: solid 2px #53535378;
+}
+
+.login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-width: 120px;
+    overflow: hidden;
+
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: #4286f4;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+
+    transition: color 0.1s ease, background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #4286f4;
+    color: black;
+}

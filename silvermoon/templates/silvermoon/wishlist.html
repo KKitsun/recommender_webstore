@@ -1,0 +1,54 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if not wishlist %}
+<div class="history_page_info">
+    <div class="history_page_info_header" style="margin-left: auto;margin-right: auto; text-align: center;">Додайте цікаві для Вас товари до бажаного</div>
+</div>
+{% else %}
+
+<div class="wishlist_page_info">
+    <div class="history_page_info_header">Список бажаного</div>
+</div>
+
+<div class="wishlist_container">
+    <div class="wishlist_wish_container" id="cart">
+        <div class="cart_container_products" id="cart">
+            {% for wish in wishlist %}
+            <div class="wishlist_wish_container_products_wishitem">
+                <div class="cart_container_products_cartitem_imagewrapper">
+                    <div class="img-shadow centered_a"><img class="cart_container_products_cartitem_image"  {% if wish.game.image %} src="{{wish.game.image.url}}" {% else %} src="" {% endif %} alt=""></div>
+                </div>
+
+                <div class="cart_container_products_cartitem_title">
+                    <div>
+                        <a href="{% url 'game_page' id=wish.game.id %}">
+                            <div class="cart_container_products_cartitem_titlelink">
+                                {{wish.game.title}}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cart_container_products_cartitem_title">
+                    <div>
+                        <div>
+                            Додано {{wish.date}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart_container_products_cartitem_button"  onclick="removeItemFromWishlist({{wish.game_id}})">
+                    Вилучити
+                </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,184 @@
+.authorization_title {
+    width: 900px;
+    margin-top: 90px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.authorization_title_header {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.4 );
+}
+
+.authorization_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.authorization_container{
+    background-image: linear-gradient(0deg, rgb(30 32 37) 0%, rgb(54 57 59) 100%);
+    min-width: 900px;
+    padding: 40px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.authorization_container_form-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.authorization_container_form {
+    flex: 1;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 1fr;
+}
+
+.authorization_container_form_field {
+    display: grid;
+    grid-template-areas:
+        "label hint"
+        "input input";
+    grid-template-columns: 1fr min-content;
+    gap: 2px;
+}
+
+.authorization_container_form_field input[type=text] {
+    border-radius: 2px;
+    color: #fff;
+    padding: 10px;
+    background-color: #32353c;
+    outline: none;
+    font-size: 15px;
+    grid-area: input;
+    border: 1px solid #32353c;
+}
+
+.authorization_container_form_field input[type=text]:focus {
+    background-color: #3c4251;
+}
+
+.authorization_container_form_field input[type=password] {
+    border-radius: 2px;
+    color: #fff;
+    padding: 10px;
+    background-color: #32353c;
+    outline: none;
+    font-size: 15px;
+    grid-area: input;
+    border: 1px solid #32353c;
+}
+
+.authorization_container_form_field input[type=password]:focus {
+    background-color: #3c4251;
+}
+
+.authorization_container_form_field input[type=email] {
+    border-radius: 2px;
+    color: #fff;
+    padding: 10px;
+    background-color: #32353c;
+    outline: none;
+    font-size: 15px;
+    grid-area: input;
+    border: 1px solid #32353c;
+}
+
+.authorization_container_form_field input[type=email]:focus {
+    background-color: #3c4251;
+}
+
+.authorization_container_form_submit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.authorization_container_form_submit_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 155px;
+    padding: 8px 15px;
+    transition: box-shadow .2s ease;
+    height: 38px;
+    box-sizing: border-box;
+    color: #dfe3e6;
+    text-align: center;
+    border-radius: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    align-self: center;
+    background: linear-gradient(90deg, #131d34, #4286f4 100%);
+    user-select: none;
+    font-size: 14px;
+    position: relative;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.authorization_container_form_submit_button:hover {
+    color: #fff;
+    box-shadow: 2px 2px 15px rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.authorization_container_form_submit_button:active {
+    color: #fff;
+    box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.552);
+    cursor: pointer;
+}
+
+.authorization_container_form_submit .errorlist {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 8px 6px;
+    color: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    min-height: 35px;
+    background-color:#7e0a0a;
+    border-radius: 5px;
+    list-style-type: none;
+    gap: 5px;
+    max-width: 775px;
+    min-width: 550px;
+}
+
+.authorization_container_form_submit p {
+    font-style: inherit;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.authorization_container_form_submit a {
+    font-style: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    color: #4286f4;
+    font-weight: inherit;
+}
+

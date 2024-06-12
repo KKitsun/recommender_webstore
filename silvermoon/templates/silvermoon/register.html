@@ -1,0 +1,60 @@
+{% extends "silvermoon/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="authorization_title">
+    <div class="authorization_title_header">Реєстрація</div>
+</div>
+
+<div class="authorization_wrapper">
+    <div class="authorization_container">
+        <div class="authorization_container_form-wrapper">
+            <form class="authorization_container_form" method="POST">
+                {% csrf_token %}
+                <div class="authorization_container_form_field">
+                    {{ form.username.label_tag }}
+                    {{ form.username}}
+                </div>
+
+                <div class="authorization_container_form_field">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+
+                <div class="authorization_container_form_field">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                </div>
+
+                <div class="authorization_container_form_field">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                </div>
+
+                <div class="authorization_container_form_submit">
+                    <input class="authorization_container_form_submit_button" type="submit" value="Зареєструватись">
+                </div>
+
+                {% if form.errors %}
+                <div class="authorization_container_form_submit">
+                    <ul class="errorlist">
+                        {% for field, notes in form.errors.items %}
+                            {% for note in notes %}
+                                <li>{{ note }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="authorization_container_form_submit">
+                    <p>Вже маєте обліковий запис? <a href="{% url 'login' %}">Увійдіть!</a></p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

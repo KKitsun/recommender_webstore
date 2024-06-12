@@ -1,0 +1,131 @@
+.gamepage_title {
+    width: 1200px;
+    margin-top: 90px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gamepage_title_header {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.4 );
+}
+
+.gamepage_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.game_description_container, .game_info_container{
+    background-image: linear-gradient(0deg, rgb(30 32 37) 0%, rgb(54 57 59) 100%);
+    background-position: initial;
+    background-size: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+    padding: 16px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.game_info_container {
+    padding: 0;
+}
+
+.game_info_container_infowrapper {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    /* gap: 10px; */
+}
+
+.game_info_container_imagewrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game_info_container_image {
+    width: 324px;
+    height: 151px;
+}
+
+.items_container_box_item_title {
+    width: 175px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.items_container_box_item_titlelink {
+    overflow-wrap: break-word;
+    max-width: 178px;
+    font-size: 14px;
+    font-weight: 100;
+    letter-spacing: 1px;
+}
+
+.game_info_container_releaseDate, .game_info_container_tags_tag {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: normal;
+    align-items: center;
+}
+
+.game_info_container_hr {
+    border: solid 1px #4c4c4c!important;
+    box-sizing: content-box;
+    height: 0px;
+    margin: 1em 0;
+}
+
+.game_info_container_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.game_info_container_buttons_rating {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
+.game_info_container_buttons_rating_star {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.game_info_container_buttons_rating_star:hover,
+.game_info_container_buttons_rating_star:hover ~ .game_info_container_buttons_rating_star {
+    color: orange;
+}
+
+.game_info_container_buttons_rating_star_checked,
+.game_info_container_buttons_rating_star_checked ~ .game_info_container_buttons_rating_star {
+    color: orange;
+}
+
+

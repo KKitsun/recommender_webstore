@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Silvermoon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Kyryl Kitsun">
+    <link rel="icon" type="image/png" href="{% static 'silvermoon/img/crescent-moon.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/cart.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/shop_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/checkout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/game_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/history.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'silvermoon/css/wishlist.css' %}">
+
+    <script>
+      function getToken(name) {
+		    var cookieValue = null;
+		      if (document.cookie && document.cookie !== '') {
+		          var cookies = document.cookie.split(';');
+		          for (var i = 0; i < cookies.length; i++) {
+		              var cookie = cookies[i].trim();
+		              
+		              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                  break;
+		              }
+		          }
+		      }
+		      return cookieValue;
+		  }
+		  var csrftoken = getToken('csrftoken')
+
+      function getCookie(name) {
+		    
+		    var cookieArr = document.cookie.split(";");
+
+		    
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        
+		        
+		        if(name == cookiePair[0].trim()) {
+		            
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    
+		    return null;
+		  }
+		  var cart = JSON.parse(getCookie('cart'))
+
+		  if (cart == undefined){
+		    cart = {}
+		  	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		  }
+
+    </script>
+
+    <script> 
+      let cartURL = "{% url 'cart-data' %}"; 
+      let checkoutURL = "{% url 'checkout' %}";
+      var user = '{{request.user}}'
+    </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+    <header>
+      <div class="navbar">
+        <div class="logo">
+          <a href="{% url 'shop_page' %}">
+            <div class="logo_title">Silvermoon</div>
+          </a>
+        </div>
+        <div class="links-container">
+          {% if request.user.is_authenticated %}
+          <div class="dropdown userlink">
+            <button class="dropbtn">{{request.user|title}}<i class="dropdown_icon"></i></button>
+            <div class="dropdown-content">
+              <a href="{% url 'history_page' %}">Історія замовлень</a>
+              <a href="{% url 'wishlist' %}">Список бажаного</a>
+              <a class="logout-button" href="{% url 'logout' %}">Вийти &#10006;</a>
+            </div>
+          </div>
+          {% else %}
+          <a class="login-link" href="{% url 'login' %}"><div class="login-button">Увійти</div></a>
+          {% endif %}
+          <div class="links">
+            <a href="{% url 'shop_page' %}">
+              <div class="header-link_div" id="header-link_div">
+                  Крамниця
+              </div>
+            </a>
+            <a href="{% url 'cart' %}">
+              <div class="header-link_div" id="header-link_div">
+                  Кошик
+              </div>
+              <div class="header_cart_counter" id="header_cart_counter">
+                {% if request.user.is_authenticated %}
+                  {{cartCounter}}
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+    {% block content %}
+    {% endblock content %}
+    </main>
+
+    <footer>
+        <div class="footer_contant">
+          
+          <div class="footer_text">
+            © 2024 Silvermoon. Усі права захищено. Усі торговельні марки є власністю відповідних власників у США та інших країнах.
+          </div>
+          
+          <hr class="footer_hr">
+
+          <div class="company_text">
+
+            <div class="footer_logo">
+              <div class="footer_logo_title">Silvermoon</div>
+              <img src="{% static 'silvermoon/img/Silvermoon_logo_BIG.png' %}" alt="Logo">
+            </div>
+
+            <div class="footer_links">
+              <div>Кіцун Кирил Олегович</div>
+              <div class="footer_vl"></div>
+              <div>КН-220б</div>
+              <div class="footer_vl"></div>
+              <div>Gmail: kirillkitsun@gmail.com</div>
+              <div class="footer_vl"></div>
+              <div>Microsoft Office365: Kyryl.Kisun@cs.khpi.edu.ua</div>
+            </div>
+
+          </div>
+
+        </div>
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="{% static 'silvermoon/js/cart.js' %}"></script>
+  <script type="text/javascript" src="{% static 'silvermoon/js/recommendations.js' %}"></script>
+  </body>
+
+</html>
